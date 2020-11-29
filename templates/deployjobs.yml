@@ -1,0 +1,44 @@
+parameters:
+- name: buildConfiguration
+  type: string
+  default: 'Release'
+
+- name: envVAR
+  type: string
+  default: 'dev'
+
+- name: azsubcription
+  type: string
+  default: 'kpazsvc'
+
+- name: AppName
+  type: string
+  default: 'webappnamedev'
+
+
+jobs: 
+- deployment: Deploy
+    
+  pool:
+     vmImage: 'ubuntu-18.04'
+
+  environment: '${{ parameters.envVAR }}'
+
+  variables:
+    - group: Release
+
+  strategy:
+        runOnce:
+          deploy:
+
+            steps:
+            - download: current
+              artifact: drop
+              
+            - task: AzureWebApp@1
+              displayName: 'Azure App Service Deploy: website'
+              inputs:
+                azureSubscription: '${{ parameters.azsubcription }}'
+                appName: '${{ parameters.AppName }}'
+                package: '$(Pipeline.Workspace)/drop/${{ parameters.buildConfiguration }}/*.zip'
+                appType: webAppLinux
