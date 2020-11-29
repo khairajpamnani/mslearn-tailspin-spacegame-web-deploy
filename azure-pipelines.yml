@@ -85,7 +85,7 @@ stages:
         eq(variables['Build.SourceBranchName'], variables['releaseBranchName'])
       )
     jobs:
-    - template: templates/jobs.yml
+    - template: templates/deployjobs.yml
       parameters:
         envVAR: dev
         AppName: '$(webappnamedev)' 
@@ -96,7 +96,7 @@ stages:
     dependsOn: Dev
     #condition: eq(variables['Build.Reason'], 'Schedule') #run whem build reason=Schedule            
     jobs:
-    - template: templates/jobs.yml
+    - template: templates/deployjobs.yml
       parameters:
         envVAR: test
         AppName: '$(webappnametest)'
@@ -106,7 +106,7 @@ stages:
     displayName: 'Deploy to the staging environment'
     dependsOn: Test
     jobs:
-    - template: templates/jobs.yml
+    - template: templates/deployjobs.yml
       parameters:
         envVAR: staging
         AppName: '$(webappnamestg)'
