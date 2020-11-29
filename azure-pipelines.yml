@@ -85,83 +85,28 @@ stages:
         eq(variables['Build.SourceBranchName'], variables['releaseBranchName'])
       )
     jobs:
-    - deployment: Deploy
+    - template: templates/jobs.yml
+      parameters:
+        envVAR: dev
+        AppName: '$(webappnamedev)' 
     
-      pool:
-        vmImage: 'ubuntu-18.04'
-
-      environment: dev
-
-      variables:
-      - group: Release
-
-      strategy:
-        runOnce:
-          deploy:
-
-            steps:
-            - download: current
-              artifact: drop
-              
-            - task: AzureWebApp@1
-              displayName: 'Azure App Service Deploy: website'
-              inputs:
-                azureSubscription: 'kpazsvc'
-                appName: '$(webappnamedev)'
-                package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-                appType: webAppLinux
   
   - stage: 'Test'
     displayName: 'Deploy to the test environment'
     dependsOn: Dev
     #condition: eq(variables['Build.Reason'], 'Schedule') #run whem build reason=Schedule            
     jobs:
-    - deployment: Deploy
-                
-      pool:
-       vmImage: 'ubuntu-18.04'
-            
-      environment: test
-            
-      variables:
-      - group: Release
-            
-      strategy:
-       runOnce:
-        deploy:
-            
-          steps:
-          - download: current
-            artifact: drop
-                          
-          - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: website'
-            inputs:
-              azureSubscription: 'kpazsvc'
-              appName: '$(webappnametest)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-              appType: webAppLinux
-  
+    - template: templates/jobs.yml
+      parameters:
+        envVAR: test
+        AppName: '$(webappnametest)'
+    
+      
   - stage: 'Staging'
     displayName: 'Deploy to the staging environment'
     dependsOn: Test
     jobs:
-      - deployment: Deploy
-        pool:
-          vmImage: 'ubuntu-18.04'
-        environment: staging
-        variables:
-          - group: 'Release'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - download: current
-                artifact: drop
-              - task: AzureWebApp@1
-                displayName: 'Azure App Service Deploy: website'
-                inputs:
-                  azureSubscription: 'kpazsvc'
-                  appName: '$(webappnamestg)'
-                  package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-                  appType: webAppLinux
+    - template: templates/jobs.yml
+      parameters:
+        envVAR: staging
+        AppName: '$(webappnamestg)'
