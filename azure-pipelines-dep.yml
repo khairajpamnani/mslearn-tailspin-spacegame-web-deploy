@@ -1,12 +1,12 @@
 trigger:
   - none
   
-
-pipelines:
-- pipeline: khairajpamnani.spacegame-web-deploy
-  source: khairajpamnani.spacegame-web-deploy
-  trigger: 
-    branches: [release]
+resources:
+  pipelines:
+  - pipeline: khairajpamnani.spacegame-web-deploy-ci
+    source: khairajpamnani.spacegame-web-deploy-ci
+    trigger: 
+      branches: [release]
 
 variables:
     #buildConfiguration: 'Release'
