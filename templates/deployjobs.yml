@@ -32,7 +32,7 @@ jobs:
           deploy:
 
             steps:
-            - download: current
+            - download: spacegameci     #pipeline resource identifier defined in cd yml file
               artifact: drop
               
             - task: AzureWebApp@1

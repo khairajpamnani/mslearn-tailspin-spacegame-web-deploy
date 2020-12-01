@@ -1,3 +1,4 @@
+#build and deploy with deploy template
 trigger:
   - '*'
   
