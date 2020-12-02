@@ -6,7 +6,8 @@ resources:
   - pipeline: spacegameci
     source: khairajpamnani.spacegame-web-deploy-ci
     trigger: 
-      branches: [release]
+      branches: 
+        - release
 
 variables:
     #buildConfiguration: 'Release'
@@ -39,7 +40,7 @@ stages:
         envVAR: test
         AppName: '$(webappnametest)'
     
-      
+       
   - stage: 'Staging'
     displayName: 'Deploy to the staging environment'
     dependsOn: Test

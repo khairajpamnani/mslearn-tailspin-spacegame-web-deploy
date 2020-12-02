@@ -40,5 +40,5 @@ jobs:
               inputs:
                 azureSubscription: '${{ parameters.azsubcription }}'
                 appName: '${{ parameters.AppName }}'
-                package: '$(Pipeline.Workspace)/drop/${{ parameters.buildConfiguration }}/*.zip'
+                package: '$(Pipeline.Workspace)/spacegameci/drop/${{ parameters.buildConfiguration }}/*.zip'
                 appType: webAppLinux
