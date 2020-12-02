@@ -7,7 +7,7 @@ resources:
     source: khairajpamnani.spacegame-web-deploy-ci
     trigger: 
       branches: 
-        - release
+      - release
 
 variables:
     #buildConfiguration: 'Release'
